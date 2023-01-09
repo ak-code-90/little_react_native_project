@@ -1,16 +1,38 @@
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { useState } from 'react';
+import { nanoid } from 'nanoid'
 
 export default function App() {
+  const [inputValue,setInputValue] = useState('');
+  const [goalList,setGoalList] = useState([]);
+
+
+  function handleChange(text) {
+    setInputValue(text);
+  }
+
+  function handlePress(event) {
+    event.preventDefault();
+    setGoalList(prevList => ([...prevList,inputValue]))
+    setInputValue('');
+  }
+
   return (
     <>
-    
     <View style={styles.appContainer}>
      <View style={styles.inputContainer}>
-      <TextInput style={styles.textInput} placeholder="Vos objectifs !"/>
-      <Button style={StyleSheet.button} title="Ajouter un objectif" />
+      <TextInput 
+        value={inputValue}
+        onChangeText={handleChange} 
+        style={styles.textInput} 
+        placeholder="Vos objectifs !"
+        maxLength={100}
+        multiline={true}
+        />
+      <Button onPress={handlePress} style={StyleSheet.button} title="Ajouter un objectif" />
      </View>
      <View style={styles.goalsContainer}>
-      <Text>Liste des objectifs d'apprentissage...</Text>
+      {goalList.map((goal,i) => <Text key={goal[i]}>{goal}</Text>)}
      </View>
     </View>
     </>
