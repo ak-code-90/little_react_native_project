@@ -5,12 +5,12 @@ export default function App() {
     <>
     
     <View style={styles.appContainer}>
-     <View>
-      <TextInput placeholder="Vos objectifs d'apprentissage"/>
-      <Button title="Ajouter un objectif" />
+     <View style={styles.inputContainer}>
+      <TextInput style={styles.textInput} placeholder="Vos objectifs !"/>
+      <Button style={StyleSheet.button} title="Ajouter un objectif" />
      </View>
-     <View>
-      <Text>Liste des objectifs...</Text>
+     <View style={styles.goalsContainer}>
+      <Text>Liste des objectifs d'apprentissage...</Text>
      </View>
     </View>
     </>
@@ -19,6 +19,29 @@ export default function App() {
 
 const styles = StyleSheet.create({
   appContainer: {
-    padding:50,
+    flex:1,
+    paddingTop:50,
+    paddingHorizontal:16,
+  },
+  inputContainer : {
+    flex:1,
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center',
+    margingBottom:24,
+    borderBottomWidth:1,
+    borderColor: '#ccc',
+  },
+  textInput : {
+    borderWidth:1,
+    borderColor: '#ccc',
+    width:'55%',
+    marginRight: 8,
+    paddingLeft:8
+  },
+  goalsContainer : {
+    flex: 5,
+    marginTop: 8,
   }
+ 
 });
