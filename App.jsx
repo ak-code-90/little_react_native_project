@@ -9,7 +9,6 @@ import GoalInput from './components/GoalInput';
 
 export default function App() {
   const [inputValue,setInputValue] = useState({text:'',error:false});
-  
   const [goalList,setGoalList] = useState([]);
 
   function handleChange(entteredText) {
@@ -19,14 +18,16 @@ export default function App() {
   function handlePress() {
     if (!inputValue.text) {
       setInputValue(prev => ({...prev,error:true}))
-      console.log(inputValue.error)
       return
     }
     else
     setInputValue(prev => ({...prev,error:false}))
     setGoalList(prevList => [...prevList,{text: inputValue.text, id: nanoid()}])
     setInputValue(prev => ({...prev,text:''}));
-    console.log(inputValue.error)
+  }
+
+  function deleteItem(id) {
+    setGoalList(prevList => prevList.filter(goal => goal.id !== id));
   }
 
   return (
@@ -43,7 +44,11 @@ export default function App() {
        keyExtractor={(item) => {return item.id;}}
        renderItem={itemData => {
         return (
-          <GoalItem itemData={itemData} />
+          <GoalItem 
+          itemData={itemData} 
+          onDeleteItem={deleteItem}
+          id={itemData.item.id}
+          />
         )
        }}
        alwaysBounceVertical={false}

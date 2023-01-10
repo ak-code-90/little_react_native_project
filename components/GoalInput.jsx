@@ -1,4 +1,4 @@
-import { View,TextInput,Button,StyleSheet,Text } from "react-native";
+import { View,TextInput,Button,StyleSheet,Text,Modal } from "react-native";
 
 export default function GoalInput({handlePress,handleChange,inputValue}) {
     return (
