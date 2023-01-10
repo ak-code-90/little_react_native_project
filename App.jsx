@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Button } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import 'react-native-get-random-values'
 import { nanoid } from 'nanoid'
@@ -10,6 +11,15 @@ import GoalInput from './components/GoalInput';
 export default function App() {
   const [inputValue,setInputValue] = useState({text:'',error:false});
   const [goalList,setGoalList] = useState([]);
+  const [modalIsVisible,setModalIsVisible] = useState(false)
+
+  function openModal() {
+    setModalIsVisible(true);
+  }
+
+  function closeModal() {
+    setModalIsVisible(false);
+  }
 
   function handleChange(entteredText) {
     setInputValue(prev => ({...prev,text:entteredText}));
@@ -24,6 +34,7 @@ export default function App() {
     setInputValue(prev => ({...prev,error:false}))
     setGoalList(prevList => [...prevList,{text: inputValue.text, id: nanoid()}])
     setInputValue(prev => ({...prev,text:''}));
+    closeModal();
   }
 
   function deleteItem(id) {
@@ -32,12 +43,16 @@ export default function App() {
 
   return (
     <>
+    <StatusBar style='light' />
     <View style={styles.appContainer}>
-     <GoalInput
-     handleChange={handleChange}
-     handlePress={handlePress}
-     inputValue={inputValue}
-     />
+      <Button title='Ajouter un nouvel objectif' color="#629b97" onPress={openModal} />
+      <GoalInput
+        visible={modalIsVisible}
+        closeModal={closeModal}
+        handleChange={handleChange}
+        handlePress={handlePress}
+        inputValue={inputValue}
+      />
      <View style={styles.goalsContainer}>
        <FlatList 
        data={goalList}
@@ -63,7 +78,7 @@ const styles = StyleSheet.create({
   appContainer: {
     flex:1,
     paddingTop:50,
-    paddingHorizontal:16,
+    paddingHorizontal:8,
   },
   goalsContainer : {
     flex: 5,
