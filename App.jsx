@@ -1,11 +1,13 @@
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, FlatList } from 'react-native';
 import { useState } from 'react';
+import 'react-native-get-random-values'
 import { nanoid } from 'nanoid'
+
+
 
 export default function App() {
   const [inputValue,setInputValue] = useState('');
   const [goalList,setGoalList] = useState([]);
-
 
   function handleChange(text) {
     setInputValue(text);
@@ -13,8 +15,9 @@ export default function App() {
 
   function handlePress(event) {
     event.preventDefault();
-    setGoalList(prevList => ([...prevList,inputValue]))
+    setGoalList(prevList => [...prevList,{text:inputValue, id: nanoid()}])
     setInputValue('');
+    console.log(goalList);
   }
 
   return (
@@ -29,10 +32,21 @@ export default function App() {
         maxLength={100}
         multiline={true}
         />
-      <Button onPress={handlePress} style={StyleSheet.button} title="Ajouter un objectif" />
+      <Button color="#0a3a6d" onPress={handlePress} style={StyleSheet.button} title="Ajouter un objectif" />
      </View>
      <View style={styles.goalsContainer}>
-      {goalList.map((goal,i) => <Text key={goal[i]}>{goal}</Text>)}
+       <FlatList 
+       data={goalList}
+       keyExtractor={(item) => {item.id}}
+       renderItem={itemData => {
+        return (
+          <View style={styles.goalItem}>
+            <Text style={styles.goalText}>{itemData.item.text}</Text>
+        </View>
+        )
+       }}
+       alwaysBounceVertical={false}
+       />
      </View>
     </View>
     </>
@@ -64,6 +78,14 @@ const styles = StyleSheet.create({
   goalsContainer : {
     flex: 5,
     marginTop: 8,
+  },
+  goalItem: {
+    margin:8,
+    padding:8,
+    borderRadius:6,
+    backgroundColor: "#06afa4",
+  },
+  goalText: {
+    color: 'white'
   }
- 
 });
